@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Join Us – Glory Valley School</title>
+  <link rel="stylesheet" href="style.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet"/>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="nav-brand">
+      <img src="logo.jpeg" alt="Glory Valley School Logo" class="nav-logo"/>
+      <span>Glory Valley School</span>
+    </div>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="index.html#about">About</a></li>
+      <li><a href="index.html#pillars">Programs</a></li>
+      <li><a href="join.html" class="btn-nav active">Join Us</a></li>
+    </ul>
+    <div class="hamburger" onclick="toggleMenu()">&#9776;</div>
+  </nav>
+
+  <!-- JOIN HERO -->
+  <section class="join-hero">
+    <img src="logo.jpeg" alt="Glory Valley School" class="join-logo"/>
+    <h1>Join the Valley</h1>
+    <p>Fill in the form below to enroll your child or express interest in Glory Valley School. We'll get back to you shortly.</p>
+  </section>
+
+  <!-- FORM -->
+  <section class="form-section">
+    <form name="join" method="POST" data-netlify="true" class="join-form">
+      <input type="hidden" name="form-name" value="join"/>
+
+      <div class="form-group">
+        <label>Parent / Guardian Full Name *</label>
+        <input type="text" name="parent_name" placeholder="e.g. Kwame Asante" required/>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Email Address *</label>
+          <input type="email" name="email" placeholder="yourname@email.com" required/>
+        </div>
+        <div class="form-group">
+          <label>Phone Number *</label>
+          <input type="tel" name="phone" placeholder="+233 XXX XXX XXX" required/>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Student's Full Name *</label>
+        <input type="text" name="student_name" placeholder="e.g. Ama Asante" required/>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Student's Age *</label>
+          <input type="number" name="age" min="3" max="18" placeholder="e.g. 10" required/>
+        </div>
+        <div class="form-group">
+          <label>Class / Level Applying For *</label>
+          <select name="class_level" required>
+            <option value="" disabled selected>Select level</option>
+            <option>Nursery / KG</option>
+            <option>Primary 1 – 3</option>
+            <option>Primary 4 – 6</option>
+            <option>JHS 1 – 3</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>How did you hear about us?</label>
+        <select name="referral">
+          <option value="" disabled selected>Select one</option>
+          <option>Social Media</option>
+          <option>Friend / Family</option>
+          <option>Flyer / Poster</option>
+          <option>School Visit</option>
+          <option>Other</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Any questions or additional information?</label>
+        <textarea name="message" rows="4" placeholder="Write anything you'd like us to know..."></textarea>
+      </div>
+
+      <button type="submit" class="btn-primary submit-btn">Submit Application</button>
+    </form>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-brand">
+      <img src="logo.jpeg" alt="Logo"/>
+      <p><strong>Glory Valley School</strong></p>
+      <p class="motto-footer">"NIMDE3, 3NY3 SIKA"</p>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 Glory Valley School. All rights reserved. | ESTD. 2023</p>
+    </div>
+  </footer>
+
+  <script>
+    function toggleMenu() {
+      document.querySelector('.nav-links').classList.toggle('open');
+    }
+  </script>
+</body>
+</html>
