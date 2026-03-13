@@ -35,7 +35,7 @@
   <section class="join-form-section">
     <form id="enrollmentForm" class="join-form" onsubmit="submitForm(event)">
 
-      <h2 class="form-section-title">👨‍👩‍👧 Parent / Guardian Information</h2>
+      <h2 class="form-section-title">&#128106; Parent / Guardian Information</h2>
       <div class="form-grid">
         <div class="form-group">
           <label>Father's Full Name</label>
@@ -67,7 +67,7 @@
         </div>
       </div>
 
-      <h2 class="form-section-title">🎓 Student Information</h2>
+      <h2 class="form-section-title">&#127891; Student Information</h2>
       <div class="form-grid">
         <div class="form-group form-group-full">
           <label>Student's Full Name *</label>
@@ -110,33 +110,27 @@
         </div>
       </div>
 
-      <div id="formStatus" style="display:none;padding:12px 16px;border-radius:8px;margin-bottom:16px;font-weight:600;"></div>
-      <button type="submit" id="submitBtn" class="join-submit-btn">Submit Application</button>
+      <div id="formStatus" style="display:none; padding:14px; border-radius:8px; margin-bottom:16px; font-weight:600;"></div>
+      <button type="submit" id="submitBtn" class="btn-submit">Submit Application</button>
     </form>
   </section>
 
   <!-- FOOTER -->
   <footer class="footer">
-    <img src="logo.jpg" alt="Logo" class="footer-logo"/>
-    <div>
+    <div class="footer-brand">
+      <img src="logo.jpg" alt="Logo"/>
       <strong>Glory Valley School</strong>
-      <p>"NIMDE3, 3NY3 SIKA"</p>
-      <p>&copy; 2026 Glory Valley School. All rights reserved. | ESTD. 2023</p>
+      <em>"NIMDE3, 3NY3 SIKA"</em>
     </div>
+    <p>&copy; 2026 Glory Valley School. All rights reserved. | ESTD. 2023</p>
   </footer>
 
   <script>
-    // ===================================================
-    // REPLACE THE URL BELOW WITH YOUR GOOGLE APPS SCRIPT
-    // DEPLOYMENT URL after following the setup guide.
-    // ===================================================
-    const APPS_SCRIPT_URL = 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE';
-
     function toggleMenu() {
       document.querySelector('.nav-links').classList.toggle('open');
     }
 
-    async function submitForm(e) {
+    function submitForm(e) {
       e.preventDefault();
       const form = document.getElementById('enrollmentForm');
       const btn = document.getElementById('submitBtn');
@@ -149,28 +143,19 @@
       const data = {};
       new FormData(form).forEach((v, k) => { data[k] = v; });
       data.submitted_at = new Date().toISOString();
+      data.id = 'app_' + Date.now();
+      data.status = 'pending';
 
-      try {
-        const res = await fetch(APPS_SCRIPT_URL, {
-          method: 'POST',
-          body: JSON.stringify(data)
-        });
-        const json = await res.json();
-        if (json.result === 'success') {
-          status.style.display = 'block';
-          status.style.background = '#d1fae5';
-          status.style.color = '#065f46';
-          status.textContent = '✅ Application submitted successfully! We will contact you shortly.';
-          form.reset();
-        } else {
-          throw new Error(json.error || 'Unknown error');
-        }
-      } catch (err) {
-        status.style.display = 'block';
-        status.style.background = '#fee2e2';
-        status.style.color = '#991b1b';
-        status.textContent = '❌ Submission failed. Please try again or contact us directly.';
-      }
+      // Save to localStorage
+      const existing = JSON.parse(localStorage.getItem('gvs_applications') || '[]');
+      existing.push(data);
+      localStorage.setItem('gvs_applications', JSON.stringify(existing));
+
+      status.style.display = 'block';
+      status.style.background = '#d1fae5';
+      status.style.color = '#065f46';
+      status.textContent = '\u2705 Application submitted successfully! We will contact you shortly.';
+      form.reset();
 
       btn.disabled = false;
       btn.textContent = 'Submit Application';
