@@ -16,10 +16,10 @@
       <span>Glory Valley School</span>
     </div>
     <ul class="nav-links">
-      <li><a href="index.html">Home</a></li>
-      <li><a href="index.html#about">About</a></li>
-      <li><a href="index.html#pillars">Programs</a></li>
-      <li><a href="join.html" class="nav-cta">Join Us</a></li>
+      <li><a href="/">Home</a></li>
+      <li><a href="/#about">About</a></li>
+      <li><a href="/#pillars">Programs</a></li>
+      <li><a href="/join" class="nav-cta">Join Us</a></li>
     </ul>
     <button class="hamburger" onclick="toggleMenu()">&#9776;</button>
   </nav>
@@ -28,108 +28,152 @@
   <section class="join-hero">
     <img src="logo.jpg" alt="Glory Valley School" class="join-logo"/>
     <h1>Join the Valley</h1>
-    <p>Fill in the form below to enroll your child or express interest in Glory Valley School. We’ll get back to you shortly.</p>
+    <p>Fill in the form below to enroll your child or express interest in Glory Valley School. We'll get back to you shortly.</p>
   </section>
 
   <!-- ENROLLMENT FORM -->
-    <!-- Netlify Forms enabled: name=enrollment, data-netlify=true, form-name hidden input included -->
   <section class="join-form-section">
-    <form name="enrollment" method="POST" data-netlify="true" netlify-honeypot="bot-field" class="join-form">
-      <input type="hidden" name="form-name" value="enrollment"/>
-      <p hidden><label>Don’t fill this out: <input name="bot-field"/></label></p>
+    <form id="enrollmentForm" class="join-form" onsubmit="submitForm(event)">
 
       <h2 class="form-section-title">👨‍👩‍👧 Parent / Guardian Information</h2>
-
-      <div class="form-group">
-        <label>Father’s Full Name</label>
-        <input type="text" name="father_name" placeholder="e.g. Kwame Asante"/>
-      </div>
-      <div class="form-group">
-        <label>Father’s Phone</label>
-        <input type="tel" name="father_phone" placeholder="+233 XXX XXX XXX"/>
-      </div>
-      <div class="form-group">
-        <label>Mother’s Full Name</label>
-        <input type="text" name="mother_name" placeholder="e.g. Akosua Mensah"/>
-      </div>
-      <div class="form-group">
-        <label>Mother’s Phone</label>
-        <input type="tel" name="mother_phone" placeholder="+233 XXX XXX XXX"/>
-      </div>
-      <div class="form-group">
-        <label>Guardian’s Full Name (if different)</label>
-        <input type="text" name="guardian_name" placeholder="e.g. Kofi Boateng"/>
-      </div>
-      <div class="form-group">
-        <label>Guardian’s Phone</label>
-        <input type="tel" name="guardian_phone" placeholder="+233 XXX XXX XXX"/>
-      </div>
-      <div class="form-group">
-        <label>Email Address *</label>
-        <input type="email" name="email" placeholder="yourname@email.com" required/>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Father's Full Name</label>
+          <input type="text" name="father_name" placeholder="e.g. Kwame Asante"/>
+        </div>
+        <div class="form-group">
+          <label>Father's Phone</label>
+          <input type="tel" name="father_phone" placeholder="+233 XXX XXX XXX"/>
+        </div>
+        <div class="form-group">
+          <label>Mother's Full Name</label>
+          <input type="text" name="mother_name" placeholder="e.g. Akosua Mensah"/>
+        </div>
+        <div class="form-group">
+          <label>Mother's Phone</label>
+          <input type="tel" name="mother_phone" placeholder="+233 XXX XXX XXX"/>
+        </div>
+        <div class="form-group">
+          <label>Guardian's Full Name (if different)</label>
+          <input type="text" name="guardian_name" placeholder="e.g. Kofi Boateng"/>
+        </div>
+        <div class="form-group">
+          <label>Guardian's Phone</label>
+          <input type="tel" name="guardian_phone" placeholder="+233 XXX XXX XXX"/>
+        </div>
+        <div class="form-group form-group-full">
+          <label>Email Address *</label>
+          <input type="email" name="email" placeholder="yourname@email.com" required/>
+        </div>
       </div>
 
       <h2 class="form-section-title">🎓 Student Information</h2>
+      <div class="form-grid">
+        <div class="form-group form-group-full">
+          <label>Student's Full Name *</label>
+          <input type="text" name="student_name" placeholder="e.g. Ama Asante" required/>
+        </div>
+        <div class="form-group">
+          <label>Date of Birth *</label>
+          <input type="date" name="dob" required/>
+        </div>
+        <div class="form-group">
+          <label>Class / Level Applying For *</label>
+          <select name="class_level" required>
+            <option value="" disabled selected>Select level</option>
+            <option>Nursery / KG</option>
+            <option>Primary 1</option>
+            <option>Primary 2</option>
+            <option>Primary 3</option>
+            <option>Primary 4</option>
+            <option>Primary 5</option>
+            <option>Primary 6</option>
+            <option>JHS 1</option>
+            <option>JHS 2</option>
+            <option>JHS 3</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>How did you hear about us?</label>
+          <select name="referral">
+            <option value="" disabled selected>Select one</option>
+            <option>Social Media</option>
+            <option>Friend / Family</option>
+            <option>Flyer / Poster</option>
+            <option>School Visit</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="form-group form-group-full">
+          <label>Any questions or additional information?</label>
+          <textarea name="message" rows="4" placeholder="Write anything you'd like us to know..."></textarea>
+        </div>
+      </div>
 
-      <div class="form-group">
-        <label>Student’s Full Name *</label>
-        <input type="text" name="student_name" placeholder="e.g. Ama Asante" required/>
-      </div>
-      <div class="form-group">
-        <label>Date of Birth *</label>
-        <input type="date" name="dob" required/>
-      </div>
-      <div class="form-group">
-        <label>Class / Level Applying For *</label>
-        <select name="class_level" required>
-          <option value="" disabled selected>Select level</option>
-          <option>Nursery / KG</option>
-          <option>Primary 1</option>
-          <option>Primary 2</option>
-          <option>Primary 3</option>
-          <option>Primary 4</option>
-          <option>Primary 5</option>
-          <option>Primary 6</option>
-          <option>JHS 1</option>
-          <option>JHS 2</option>
-          <option>JHS 3</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label>How did you hear about us?</label>
-        <select name="referral">
-          <option value="" disabled selected>Select one</option>
-          <option>Social Media</option>
-          <option>Friend / Family</option>
-          <option>Flyer / Poster</option>
-          <option>School Visit</option>
-          <option>Other</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label>Any questions or additional information?</label>
-        <textarea name="message" rows="4" placeholder="Write anything you’d like us to know..."></textarea>
-      </div>
-
-      <button type="submit" class="btn-primary">Submit Application</button>
+      <div id="formStatus" style="display:none;padding:12px 16px;border-radius:8px;margin-bottom:16px;font-weight:600;"></div>
+      <button type="submit" id="submitBtn" class="join-submit-btn">Submit Application</button>
     </form>
   </section>
 
   <!-- FOOTER -->
   <footer class="footer">
-    <div class="footer-logo">
-      <img src="logo.jpg" alt="Logo" class="footer-logo-img"/>
-      <div>
-        <strong>Glory Valley School</strong>
-        <p>&ldquo;NIMDE3, 3NY3 SIKA&rdquo;</p>
-      </div>
+    <img src="logo.jpg" alt="Logo" class="footer-logo"/>
+    <div>
+      <strong>Glory Valley School</strong>
+      <p>"NIMDE3, 3NY3 SIKA"</p>
+      <p>&copy; 2026 Glory Valley School. All rights reserved. | ESTD. 2023</p>
     </div>
-    <p>&copy; 2026 Glory Valley School. All rights reserved. | ESTD. 2023</p>
   </footer>
 
   <script>
+    // ===================================================
+    // REPLACE THE URL BELOW WITH YOUR GOOGLE APPS SCRIPT
+    // DEPLOYMENT URL after following the setup guide.
+    // ===================================================
+    const APPS_SCRIPT_URL = 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE';
+
     function toggleMenu() {
       document.querySelector('.nav-links').classList.toggle('open');
+    }
+
+    async function submitForm(e) {
+      e.preventDefault();
+      const form = document.getElementById('enrollmentForm');
+      const btn = document.getElementById('submitBtn');
+      const status = document.getElementById('formStatus');
+
+      btn.disabled = true;
+      btn.textContent = 'Submitting...';
+      status.style.display = 'none';
+
+      const data = {};
+      new FormData(form).forEach((v, k) => { data[k] = v; });
+      data.submitted_at = new Date().toISOString();
+
+      try {
+        const res = await fetch(APPS_SCRIPT_URL, {
+          method: 'POST',
+          body: JSON.stringify(data)
+        });
+        const json = await res.json();
+        if (json.result === 'success') {
+          status.style.display = 'block';
+          status.style.background = '#d1fae5';
+          status.style.color = '#065f46';
+          status.textContent = '✅ Application submitted successfully! We will contact you shortly.';
+          form.reset();
+        } else {
+          throw new Error(json.error || 'Unknown error');
+        }
+      } catch (err) {
+        status.style.display = 'block';
+        status.style.background = '#fee2e2';
+        status.style.color = '#991b1b';
+        status.textContent = '❌ Submission failed. Please try again or contact us directly.';
+      }
+
+      btn.disabled = false;
+      btn.textContent = 'Submit Application';
     }
   </script>
 
