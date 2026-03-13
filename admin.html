@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>School Management - Glory Valley School</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Arial', sans-serif;
+      background: #f3f4f6;
+      color: #1f2937;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    header {
+      background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+      color: white;
+      padding: 30px 20px;
+      text-align: center;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+    header h1 {
+      font-size: 2rem;
+      margin-bottom: 8px;
+    }
+    header p {
+      font-size: 1rem;
+      opacity: 0.9;
+    }
+    .tabs {
+      display: flex;
+      gap: 10px;
+      margin: 30px 0 20px 0;
+      border-bottom: 2px solid #e5e7eb;
+    }
+    .tab-btn {
+      padding: 12px 24px;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: 600;
+      color: #6b7280;
+      border-bottom: 3px solid transparent;
+      transition: all 0.3s;
+    }
+    .tab-btn.active {
+      color: #1e40af;
+      border-bottom-color: #1e40af;
+    }
+    .tab-content {
+      display: none;
+    }
+    .tab-content.active {
+      display: block;
+    }
+    .card {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      border: 1px solid #e5e7eb;
+    }
+    .card h3 {
+      font-size: 1.25rem;
+      margin-bottom: 12px;
+      color: #1f2937;
+    }
+    .field {
+      margin-bottom: 8px;
+      font-size: 0.95rem;
+    }
+    .field strong {
+      color: #4b5563;
+      display: inline-block;
+      min-width: 140px;
+    }
+    .btn {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.95rem;
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+    .btn-approve {
+      background: #10b981;
+      color: white;
+      margin-right: 10px;
+    }
+    .btn-approve:hover {
+      background: #059669;
+    }
+    .btn-reject {
+      background: #ef4444;
+      color: white;
+    }
+    .btn-reject:hover {
+      background: #dc2626;
+    }
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: #9ca3af;
+      font-size: 1.1rem;
+    }
+    .badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 12px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-left: 10px;
+    }
+    .badge-pending {
+      background: #fef3c7;
+      color: #92400e;
+    }
+    .badge-approved {
+      background: #d1fae5;
+      color: #065f46;
+    }
+    .student-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+    }
+    .student-card {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      border: 1px solid #e5e7eb;
+    }
+    .student-card h4 {
+      font-size: 1.2rem;
+      margin-bottom: 10px;
+      color: #1e40af;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>&#127979; Glory Valley School Management</h1>
+    <p>Applications & Student Records</p>
+  </header>
+
+  <div class="container">
+    <div class="tabs">
+      <button class="tab-btn active" onclick="switchTab('applications')">&#128203; Applications</button>
+      <button class="tab-btn" onclick="switchTab('students')">&#127891; Students</button>
+    </div>
+
+    <!-- APPLICATIONS TAB -->
+    <div id="applications" class="tab-content active">
+      <div id="applicationsContent"></div>
+    </div>
+
+    <!-- STUDENTS TAB -->
+    <div id="students" class="tab-content">
+      <div id="studentsContent"></div>
+    </div>
+  </div>
+
+  <script>
+    function switchTab(tab) {
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+      
+      event.target.classList.add('active');
+      document.getElementById(tab).classList.add('active');
+    }
+
+    function loadApplications() {
+      const apps = JSON.parse(localStorage.getItem('gvs_applications') || '[]');
+      const pending = apps.filter(a => a.status === 'pending');
+      const container = document.getElementById('applicationsContent');
+
+      if (pending.length === 0) {
+        container.innerHTML = '<div class="empty-state">&#128221; No pending applications</div>';
+        return;
+      }
+
+      container.innerHTML = pending.map(app => `
+        <div class="card">
+          <h3>${app.student_name} <span class="badge badge-pending">Pending</span></h3>
+          <div class="field"><strong>Class Level:</strong> ${app.class_level}</div>
+          <div class="field"><strong>Date of Birth:</strong> ${app.dob}</div>
+          <div class="field"><strong>Email:</strong> ${app.email}</div>
+          <div class="field"><strong>Father's Name:</strong> ${app.father_name || 'N/A'}</div>
+          <div class="field"><strong>Father's Phone:</strong> ${app.father_phone || 'N/A'}</div>
+          <div class="field"><strong>Mother's Name:</strong> ${app.mother_name || 'N/A'}</div>
+          <div class="field"><strong>Mother's Phone:</strong> ${app.mother_phone || 'N/A'}</div>
+          <div class="field"><strong>Guardian:</strong> ${app.guardian_name || 'N/A'}</div>
+          <div class="field"><strong>Guardian Phone:</strong> ${app.guardian_phone || 'N/A'}</div>
+          <div class="field"><strong>Referral:</strong> ${app.referral || 'N/A'}</div>
+          <div class="field"><strong>Message:</strong> ${app.message || 'N/A'}</div>
+          <div class="field"><strong>Submitted:</strong> ${new Date(app.submitted_at).toLocaleString()}</div>
+          <div style="margin-top:16px;">
+            <button class="btn btn-approve" onclick="approveApplication('${app.id}')">\u2705 Approve & Add to Students</button>
+            <button class="btn btn-reject" onclick="rejectApplication('${app.id}')">\u274C Reject</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function loadStudents() {
+      const students = JSON.parse(localStorage.getItem('gvs_students') || '[]');
+      const container = document.getElementById('studentsContent');
+
+      if (students.length === 0) {
+        container.innerHTML = '<div class="empty-state">&#128100; No students yet</div>';
+        return;
+      }
+
+      container.innerHTML = '<div class="student-grid">' + students.map(student => `
+        <div class="student-card">
+          <h4>${student.student_name}</h4>
+          <div class="field"><strong>Class:</strong> ${student.class_level}</div>
+          <div class="field"><strong>DOB:</strong> ${student.dob}</div>
+          <div class="field"><strong>Email:</strong> ${student.email}</div>
+          <div class="field"><strong>Father:</strong> ${student.father_name || 'N/A'}</div>
+          <div class="field"><strong>Mother:</strong> ${student.mother_name || 'N/A'}</div>
+          <div class="field"><strong>Added:</strong> ${new Date(student.approved_at).toLocaleDateString()}</div>
+        </div>
+      `).join('') + '</div>';
+    }
+
+    function approveApplication(id) {
+      let apps = JSON.parse(localStorage.getItem('gvs_applications') || '[]');
+      const appIndex = apps.findIndex(a => a.id === id);
+      
+      if (appIndex === -1) return;
+      
+      const app = apps[appIndex];
+      app.status = 'approved';
+      app.approved_at = new Date().toISOString();
+      
+      // Add to students
+      const students = JSON.parse(localStorage.getItem('gvs_students') || '[]');
+      students.push(app);
+      localStorage.setItem('gvs_students', JSON.stringify(students));
+      
+      // Update application status
+      apps[appIndex] = app;
+      localStorage.setItem('gvs_applications', JSON.stringify(apps));
+      
+      alert('\u2705 Student approved and added to Students list!');
+      loadApplications();
+      loadStudents();
+    }
+
+    function rejectApplication(id) {
+      if (!confirm('Are you sure you want to reject this application?')) return;
+      
+      let apps = JSON.parse(localStorage.getItem('gvs_applications') || '[]');
+      const appIndex = apps.findIndex(a => a.id === id);
+      
+      if (appIndex === -1) return;
+      
+      apps[appIndex].status = 'rejected';
+      localStorage.setItem('gvs_applications', JSON.stringify(apps));
+      
+      alert('\u274C Application rejected.');
+      loadApplications();
+    }
+
+    // Initial load
+    loadApplications();
+    loadStudents();
+  </script>
+
+</body>
+</html>
