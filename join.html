@@ -33,7 +33,8 @@
 
   <!-- ENROLLMENT FORM -->
   <section class="join-form-section">
-    <form id="enrollmentForm" class="join-form" onsubmit="submitForm(event)">
+    <form name="enrollment" method="POST" data-netlify="true" class="join-form">
+      <input type="hidden" name="form-name" value="enrollment" />
 
       <h2 class="form-section-title">&#128106; Parent / Guardian Information</h2>
       <div class="form-grid">
@@ -110,8 +111,7 @@
         </div>
       </div>
 
-      <div id="formStatus" style="display:none; padding:14px; border-radius:8px; margin-bottom:16px; font-weight:600;"></div>
-      <button type="submit" id="submitBtn" class="btn-submit">Submit Application</button>
+      <button type="submit" class="btn-submit">Submit Application</button>
     </form>
   </section>
 
@@ -128,37 +128,6 @@
   <script>
     function toggleMenu() {
       document.querySelector('.nav-links').classList.toggle('open');
-    }
-
-    function submitForm(e) {
-      e.preventDefault();
-      const form = document.getElementById('enrollmentForm');
-      const btn = document.getElementById('submitBtn');
-      const status = document.getElementById('formStatus');
-
-      btn.disabled = true;
-      btn.textContent = 'Submitting...';
-      status.style.display = 'none';
-
-      const data = {};
-      new FormData(form).forEach((v, k) => { data[k] = v; });
-      data.submitted_at = new Date().toISOString();
-      data.id = 'app_' + Date.now();
-      data.status = 'pending';
-
-      // Save to localStorage
-      const existing = JSON.parse(localStorage.getItem('gvs_applications') || '[]');
-      existing.push(data);
-      localStorage.setItem('gvs_applications', JSON.stringify(existing));
-
-      status.style.display = 'block';
-      status.style.background = '#d1fae5';
-      status.style.color = '#065f46';
-      status.textContent = '\u2705 Application submitted successfully! We will contact you shortly.';
-      form.reset();
-
-      btn.disabled = false;
-      btn.textContent = 'Submit Application';
     }
   </script>
 
