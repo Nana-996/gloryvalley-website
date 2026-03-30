@@ -6,6 +6,12 @@
   <title>Join Us – Glory Valley School</title>
   <link rel="stylesheet" href="style.css"/>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet"/>
+  <script>
+    // Redirect to Netlify version if not on netlify.app (Netlify Forms only work on Netlify hosting)
+    if (!window.location.hostname.includes('netlify.app') && !window.location.hostname.includes('localhost')) {
+      window.location.replace('https://gloryvalleyschool.netlify.app/join');
+    }
+  </script>
 </head>
 <body>
 
