@@ -6,89 +6,11 @@
   <title>Join Us – Glory Valley School</title>
   <link rel="stylesheet" href="style.css"/>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet"/>
-  <script src="https://js.paystack.co/v1/inline.js"></script>
   <script>
-    // Redirect to Netlify version if not on netlify.app (Netlify Forms only work on Netlify hosting)
     if (!window.location.hostname.includes('netlify.app') && !window.location.hostname.includes('localhost')) {
       window.location.replace('https://gloryvalleyschool.netlify.app/join');
     }
   </script>
-  <style>
-    .payment-notice {
-      background: linear-gradient(135deg, #fff8e1, #fff3cd);
-      border: 2px solid #f0a500;
-      border-radius: 12px;
-      padding: 20px 24px;
-      margin: 24px 0;
-      text-align: center;
-    }
-    .payment-notice h3 {
-      color: #b47a00;
-      margin: 0 0 8px;
-      font-size: 1.1rem;
-    }
-    .payment-notice p {
-      color: #7a5500;
-      margin: 0;
-      font-size: 0.95rem;
-    }
-    .payment-notice .fee-amount {
-      font-size: 1.6rem;
-      font-weight: 800;
-      color: #b47a00;
-      display: block;
-      margin: 10px 0 4px;
-    }
-    .pay-btn {
-      background: linear-gradient(135deg, #0a6640, #1a8f5a);
-      color: #fff;
-      border: none;
-      border-radius: 10px;
-      padding: 16px 40px;
-      font-size: 1.1rem;
-      font-weight: 700;
-      cursor: pointer;
-      width: 100%;
-      margin-top: 10px;
-      transition: opacity 0.2s;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-    }
-    .pay-btn:hover { opacity: 0.88; }
-    .pay-btn:disabled { opacity: 0.5; cursor: not-allowed; }
-    .payment-badge {
-      display: inline-block;
-      background: #e8f5ee;
-      color: #0a6640;
-      border-radius: 20px;
-      padding: 4px 14px;
-      font-size: 0.82rem;
-      font-weight: 600;
-      margin-top: 12px;
-    }
-    #payment-status-msg {
-      display: none;
-      margin-top: 12px;
-      padding: 12px 18px;
-      border-radius: 8px;
-      font-weight: 600;
-      font-size: 0.95rem;
-    }
-    #payment-status-msg.success {
-      background: #d4edda;
-      color: #155724;
-      border: 1px solid #c3e6cb;
-      display: block;
-    }
-    #payment-status-msg.error {
-      background: #f8d7da;
-      color: #721c24;
-      border: 1px solid #f5c6cb;
-      display: block;
-    }
-  </style>
 </head>
 <body>
   <!-- NAVBAR -->
@@ -115,10 +37,8 @@
 
   <!-- ENROLLMENT FORM -->
   <section class="join-form-section">
-    <form name="enrollment" method="POST" data-netlify="true" class="join-form" id="enrollmentForm">
+    <form name="enrollment" method="POST" data-netlify="true" class="join-form">
       <input type="hidden" name="form-name" value="enrollment" />
-      <input type="hidden" name="paystack_reference" id="paystackRef" value="" />
-      <input type="hidden" name="payment_status" id="paymentStatus" value="" />
 
       <h2 class="form-section-title">&#128106; Parent / Guardian Information</h2>
       <div class="form-grid">
@@ -148,7 +68,7 @@
         </div>
         <div class="form-group form-group-full">
           <label>Email Address *</label>
-          <input type="email" name="email" id="parentEmail" placeholder="yourname@email.com" required/>
+          <input type="email" name="email" placeholder="yourname@email.com" required/>
         </div>
       </div>
 
@@ -195,20 +115,7 @@
         </div>
       </div>
 
-      <!-- PAYMENT SECTION -->
-      <div class="payment-notice">
-        <h3>&#128176; Application Fee Required</h3>
-        <p>A non-refundable application fee is required to complete your enrollment submission.</p>
-        <span class="fee-amount">GH&#8373; 50.00</span>
-        <p>Secure payment powered by Paystack &mdash; Mobile Money &amp; Card accepted</p>
-        <span class="payment-badge">&#128274; SSL Secured &nbsp;&bull;&nbsp; Powered by Paystack</span>
-      </div>
-
-      <div id="payment-status-msg"></div>
-
-      <button type="button" class="pay-btn" id="payBtn" onclick="initiatePayment()">
-        &#128179; Pay GH&#8373; 50 &amp; Submit Application
-      </button>
+      <button type="submit" class="submit-btn">Submit Application</button>
     </form>
   </section>
 
@@ -227,74 +134,6 @@
   <script>
     function toggleMenu() {
       document.querySelector('.nav-links').classList.toggle('open');
-    }
-
-    function initiatePayment() {
-      const form = document.getElementById('enrollmentForm');
-
-      // Validate all required fields before opening payment
-      const requiredFields = form.querySelectorAll('[required]');
-      let allValid = true;
-      requiredFields.forEach(function(field) {
-        if (!field.value.trim()) {
-          field.style.borderColor = '#e74c3c';
-          allValid = false;
-        } else {
-          field.style.borderColor = '';
-        }
-      });
-
-      if (!allValid) {
-        showStatus('error', '&#9888; Please fill in all required fields before payment.');
-        window.scrollTo({ top: form.offsetTop, behavior: 'smooth' });
-        return;
-      }
-
-      const email = document.getElementById('parentEmail').value.trim();
-      if (!email) {
-        showStatus('error', '&#9888; Please enter your email address to proceed with payment.');
-        return;
-      }
-
-      const payBtn = document.getElementById('payBtn');
-      payBtn.disabled = true;
-      payBtn.textContent = 'Opening payment...';
-
-      const handler = PaystackPop.setup({
-        key: 'pk_live_YOUR_PAYSTACK_PUBLIC_KEY_HERE',
-        email: email,
-        amount: 5000,
-        currency: 'GHS',
-        ref: 'GVS-' + new Date().getTime(),
-        label: 'Glory Valley School Application Fee',
-        metadata: {
-          student_name: form.querySelector('[name="student_name"]').value,
-          class_level: form.querySelector('[name="class_level"]').value
-        },
-        callback: function(response) {
-          // Payment successful - inject reference and submit form
-          document.getElementById('paystackRef').value = response.reference;
-          document.getElementById('paymentStatus').value = 'paid';
-          showStatus('success', '&#10003; Payment successful! Reference: ' + response.reference + '. Submitting your application...');
-          payBtn.textContent = 'Submitting...';
-          setTimeout(function() { form.submit(); }, 1500);
-        },
-        onClose: function() {
-          // Payment window closed without completing
-          payBtn.disabled = false;
-          payBtn.innerHTML = '&#128179; Pay GH&#8373; 50 &amp; Submit Application';
-          showStatus('error', '&#10005; Payment was not completed. Your application has NOT been submitted. Please pay to complete enrollment.');
-        }
-      });
-
-      handler.openIframe();
-    }
-
-    function showStatus(type, message) {
-      const el = document.getElementById('payment-status-msg');
-      el.className = type;
-      el.innerHTML = message;
-      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
   </script>
 </body>
