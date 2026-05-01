@@ -2,7 +2,7 @@
 // This uses the Paystack secret key for server-side verification
 // Required environment variable: PAYSTACK_SECRET_KEY
 
-const PAYSTACK_SECRET_KEY = process.env.PAYSTACK_SECRET_KEY || "sk_test_8ee33765dae3fd6e8910e7dff798ae47fd46e1f8";
+const PAYSTACK_SECRET_KEY = process.env.PAYSTACK_SECRET_KEY || "sk_live_9006cb491721ee0b173e976b71babffd00b165b8";
 
 exports.handler = async (event, context) => {
   // Only accept POST requests
